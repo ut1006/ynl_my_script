@@ -300,6 +300,7 @@ def AsSlopeIntercept(x0, x1, y0, y1) :
 
     return (m, b)
 
+
 def EvalDerivativeLinearGamma(m, b, g, x) :
     return g*m*powf(m*x+b,g-1.0)
 
