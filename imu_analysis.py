@@ -56,9 +56,9 @@ if __name__ == "__main__":
     rospy.init_node("imu_data_visualization")
     
     # ROSbagファイルとトピックを指定
-    bagfile = "/home/kamada/2024-11-19-09-30-29-stable-flight-morning-height-1p3.bag"
+    bagfile = "/media/kamadagpu/JetsonSSD/rosbag_1124_imu_test/_2024-11-24-12-29-19_smmoth_iamge.bag"
     # topic = "/gimbalrotor1/imu"
-    topic = "/gimbalrotor1/livox/imu"
+    topic = "/gimbalrotor1/imu"
     
     # データ取得
     timestamps, acc_data, gyro_data, mag_data, angles = extract_imu_data(bagfile, topic)
