@@ -61,12 +61,17 @@ def process_pair(disp_path, image_path):
     xx, yy = np.meshgrid(np.arange(W), np.arange(H))
   
     # points_grid = np.stack(((xx - cx1) / fx, (yy - cy) / fy, np.ones_like(xx)), axis=0) * depth 単位はメートルに
-    points_grid = np.stack(((xx-cx1/2) / fx, (yy-cy/2) / fy, np.ones_like(xx)), axis=0) * depth /1000
+    # points_grid = np.stack(((xx-cx1/2) / fx, (yy-cy/2) / fy, np.ones_like(xx)), axis=0) * depth /1000
+    x=(xx-cx1/2) / fx
+    y=(yy-cy/2) / fy
+    z=np.ones_like(xx)
+
+    points_grid = np.stack((z,-x,-y), axis=0) * depth /1000 # allign pcd frame with drone frame
     mask = np.ones((H, W), dtype=bool)
 
     # Remove flying points
-    mask[1:][np.abs(depth[1:] - depth[:-1]) > 1] = False
-    mask[:, 1:][np.abs(depth[:, 1:] - depth[:, :-1]) > 1] = False
+    mask[1:][np.abs(depth[1:] - depth[:-1]) > 1] = True#false
+    mask[:, 1:][np.abs(depth[:, 1:] - depth[:, :-1]) > 1] = True#False
 
     points = points_grid.transpose(1, 2, 0)[mask]
     colors = image[mask].astype(np.float64) / 255
@@ -80,7 +85,7 @@ def process_pair(disp_path, image_path):
     ply_filename = output_dir / f'{parent_dir_name}.ply'
 
     # Save the rotated PLY file
-    write_ply(ply_filename, points_rotated, colors)
+    write_ply(ply_filename, points, colors)
     print(f'Saved PLY file to: {ply_filename}')
 def natural_sort_key(s):
     """Sort strings in natural order."""

@@ -14,7 +14,7 @@ bridge = CvBridge()
 listener = None
 
 # 出力ディレクトリを作成
-output_dir = "output"
+output_dir = "images"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
@@ -41,7 +41,7 @@ def right_image_rect_callback(msg):
 def save_tf_data(count, dir_name):
     try:
         # base_linkからzedm_camera_centerまでのTFを取得
-        (trans, rot) = listener.lookupTransform('base_link', 'zedm_left_camera_frame', rospy.Time(0))
+        (trans, rot) = listener.lookupTransform('world', '/body', rospy.Time(0))
 
         # CSVファイルに姿勢情報を保存
         tf_filename = os.path.join(dir_name, f"tf{count:04d}.csv")  # 保存先を画像と同じディレクトリに変更
